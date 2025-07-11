@@ -1,7 +1,13 @@
-import BusinessAIEnforcer from '@/components/BusinessAIEnforcer';
+import LandingPage from '@/components/LandingPage';
+import NathaliaChat from '@/components/NathaliaChat';
 
 const Index = () => {
-  return <BusinessAIEnforcer />;
+  return (
+    <>
+      <LandingPage />
+      <NathaliaChat />
+    </>
+  );
 };
 
 export default Index;
