@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ArrowRight, Zap, FileText, Shield, Clipboard, Bot, Target } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -8,14 +8,69 @@ const LandingPage = () => {
     element?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  useEffect(() => {
+    const title = 'Business AI Enforcer – Strategische K.I.-Analyse';
+    const description = 'Präzise K.I.-Analyse für Wettbewerb, Risiken, Trends und operative Entscheidungen.';
+    document.title = title;
+
+    const ensureMeta = (name: string, content: string) => {
+      let el = document.querySelector(`meta[name="${name}"]`) as HTMLMetaElement | null;
+      if (!el) {
+        el = document.createElement('meta');
+        el.setAttribute('name', name);
+        document.head.appendChild(el);
+      }
+      el.setAttribute('content', content);
+    };
+
+    const ensureOg = (property: string, content: string) => {
+      let el = document.querySelector(`meta[property="${property}"]`) as HTMLMetaElement | null;
+      if (!el) {
+        el = document.createElement('meta');
+        el.setAttribute('property', property);
+        document.head.appendChild(el);
+      }
+      el.setAttribute('content', content);
+    };
+
+    ensureMeta('description', description);
+    ensureOg('og:title', title);
+    ensureOg('og:description', description);
+    ensureOg('og:type', 'website');
+
+    let link = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
+    const href = window.location.origin + window.location.pathname;
+    if (!link) {
+      link = document.createElement('link');
+      link.setAttribute('rel', 'canonical');
+      document.head.appendChild(link);
+    }
+    link.setAttribute('href', href);
+
+    const ld = {
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      name: 'Business AI Enforcer',
+      url: href,
+      description,
+    } as const;
+    const prev = document.getElementById('ld-website');
+    if (prev) prev.remove();
+    const script = document.createElement('script');
+    script.id = 'ld-website';
+    script.type = 'application/ld+json';
+    script.textContent = JSON.stringify(ld);
+    document.head.appendChild(script);
+  }, []);
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Header */}
       <header className="absolute top-0 left-0 w-full z-10 p-4">
         <div className="container mx-auto flex justify-between items-center">
-          <h1 className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+          <div className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
             Business AI Enforcer
-          </h1>
+          </div>
           <Button 
             onClick={scrollToAnalysis}
             variant="outline" 
@@ -31,13 +86,13 @@ const LandingPage = () => {
         <section className="relative py-20 md:py-32 lg:py-40 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-glow opacity-30"></div>
           <div className="container mx-auto px-4 relative z-10 text-center">
-            <h2 className="text-4xl md:text-6xl font-black uppercase tracking-wide mb-4">
+            <h1 className="text-4xl md:text-6xl font-black uppercase tracking-wide mb-4">
               <span className="bg-gradient-primary bg-clip-text text-transparent">
                 Strategische Intelligenz
               </span>
               <br />
               <span className="text-foreground">auf Knopfdruck</span>
-            </h2>
+            </h1>
             <p className="text-lg md:text-2xl mt-4 max-w-3xl mx-auto text-muted-foreground">
               Ihre präzise K.I.-Analyse für Wettbewerb, Risiken, Trends und operative Entscheidungen.
             </p>
